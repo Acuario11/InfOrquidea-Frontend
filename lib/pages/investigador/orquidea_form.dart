@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:login_inforquidea/models/orquidea.dart';
 import 'package:login_inforquidea/providers/orquidea.dart';
 import 'package:login_inforquidea/temas/theme_helper.dart';
@@ -15,6 +16,7 @@ class OrquideaForm extends StatefulWidget {
 class _OrquideaFormState extends State<OrquideaForm> {
 //Formkey
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final picker = ImagePicker();
 
   String fotoO = "";
   String nombre = "";
@@ -90,11 +92,22 @@ class _OrquideaFormState extends State<OrquideaForm> {
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.fromLTRB(80, 80, 0, 0),
-                                child: Icon(
+                                padding: EdgeInsets.fromLTRB(70, 70, 0, 0),
+                                  child:
+                                  IconButton(
+                                      onPressed: ()=>_onPressed(), icon: Icon(
+                                    Icons.add_circle,
+                                    color: Colors.grey.shade700,
+                                    size: 25.0,
+                                  )
+                                /*child: IconButton.icon(
+                                    IconButton(onPressed: onPressed, icon: icon)
+
+                                  onPressed: () {  }, icon: Icon(
                                   Icons.add_circle,
                                   color: Colors.grey.shade700,
                                   size: 25.0,
+                                ), label: Text(""),*/
                                 ),
                               ),
                             ],
@@ -265,5 +278,15 @@ class _OrquideaFormState extends State<OrquideaForm> {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => ProfilePage()),
         (Route<dynamic> route) => false);
+  }
+
+  void _onPressed() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    try{
+      if(pickedFile!=null){
+        print(pickedFile.path);
+      }
+
+    } on Exception catch (_) {}
   }
 }

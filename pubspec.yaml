@@ -39,6 +39,7 @@ dependencies:
   otp_text_field: ^1.1.1
   http: ^0.13.4
   flutter_qr_bar_scanner: ^3.0.2
+  image_picker: ^0.7.2+1
 
 
 
