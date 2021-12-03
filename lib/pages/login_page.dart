@@ -2,11 +2,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:login_inforquidea/models/auth.dart';
+import 'package:login_inforquidea/pages/home/homeadmvivero.dart';
+import 'package:login_inforquidea/pages/home/homeinvestigador.dart';
+import 'package:login_inforquidea/pages/home/homepubgeneral.dart';
 import 'package:login_inforquidea/pages/profile_page.dart';
 import 'package:login_inforquidea/pages/registration_page.dart';
+import 'package:login_inforquidea/providers/auth.dart';
 import 'package:login_inforquidea/temas/theme_helper.dart';
 
 import 'forgot_password_page.dart';
+import 'home/homeadministrador.dart';
 import 'widgets/header_widget.dart';
 
 class LoginPage extends StatefulWidget{
@@ -18,7 +24,12 @@ class LoginPage extends StatefulWidget{
 
 class _LoginPageState extends State<LoginPage>{
   double _headerHeight = 250;
-  Key _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String usuario = "";
+  String clave = "";
+  String rol = "";
+
   @override
   Widget build(BuildContext context) {
 
@@ -50,13 +61,19 @@ class _LoginPageState extends State<LoginPage>{
                       key: _formKey,
                       child: Column(
                         children: [
-                          TextField(
+                          TextFormField(
                             decoration: ThemeHelper().textInputDecoration('User Name', 'Ingresa tu usuario'),
+                            onSaved: (value) {
+                              usuario = value!;
+                            },
                           ),
                           SizedBox(height: 30.0),
-                          TextField(
+                          TextFormField(
                             obscureText: true,
                             decoration: ThemeHelper().textInputDecoration('Password',  'Ingresa tu contraseña'),
+                            onSaved: (value) {
+                              clave = value!;
+                            },
                           ),
                           SizedBox(height: 15.0),
                           Container(
@@ -89,7 +106,16 @@ class _LoginPageState extends State<LoginPage>{
                               ),
                               onPressed: (){
                                 //Ir a la página de información
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ProfilePage()));
+
+
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+
+                                  validarToken(usuario, clave);
+
+                                }
+
+                                //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ProfilePage()));
                               },
                             ),
                           ),
@@ -125,5 +151,40 @@ class _LoginPageState extends State<LoginPage>{
     );
   }
 
+  void validarToken(String usuario, String clave) async {
+    AuthProvider ap = AuthProvider();
+    AuthResponse ar =
+    await ap.obtenerToken(usuario, clave);
+
+    if (ar.message != "Usuario autenticado") {
+      print("Fail :(");
+    } else {
+      print("Login Exitoso :D");
+
+      print(ar.message);
+      print(ar.usuarioId);
+      print(ar.token);
+
+      //////////////////////////////////
+      //Redireccion dependiendo de Rol//
+      //////////////////////////////////
+
+      RolByUsuarioResponse rbur = await ap.obtenerRolPorUsuarioId(ar.usuarioId);
+      print("ROL ENCONTRADO: ${rbur.rol.nombre}");
+      rol = rbur.rol.nombre;
+
+      if(rol == "Administrador"){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeAdministrador()));
+      }else if(rol == "Administrador Vivero"){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeAdmVivero()));
+      }else if(rol == "Investigador"){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeInvestigador()));
+      }else if(rol == "Público General"){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomePubGeneral()));
+      }
+
+      //Navigator.pushNamed(context, '/home');
+    }
+  }
 
 }

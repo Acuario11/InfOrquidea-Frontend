@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:login_inforquidea/pages/administrador/r_investigador_form.dart';
 import 'package:login_inforquidea/pages/administrador/vivero_form.dart';
 import 'package:login_inforquidea/pages/widgets/header_widget.dart';
 
@@ -89,7 +90,7 @@ class _HomeAdministrador extends State<HomeAdministrador>{
                 leading: Icon(Icons.filter_vintage_outlined, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
                 title: Text('Registrar Investigador', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
                 onTap: (){
-                  //Navigator.push(context, MaterialPageRoute(builder: (context) => CreateOrquidea()),);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => InvestigadorForm()),);
                 },
               ),
               Divider(color: Theme.of(context).primaryColor, height: 1,),

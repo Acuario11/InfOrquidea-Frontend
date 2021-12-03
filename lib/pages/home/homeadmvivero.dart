@@ -8,11 +8,11 @@ class HomeAdmVivero extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
 
-    return _HomeInvestigador();
+    return _HomeAdmVivero();
   }
 }
 
-class _HomeInvestigador extends State<HomeAdmVivero>{
+class _HomeAdmVivero extends State<HomeAdmVivero>{
   double _drawerIconSize = 24;
   double _drawerFontSize =17;
 
@@ -20,7 +20,7 @@ class _HomeInvestigador extends State<HomeAdmVivero>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text("M.P. Investigador",
+        title:const Text("Home Administrador Vivero",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,

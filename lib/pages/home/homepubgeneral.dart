@@ -9,15 +9,15 @@ import 'package:login_inforquidea/pages/viveros/v_viveros.dart';
 import 'package:login_inforquidea/pages/widgets/header_widget.dart';
 
 
-class ProfilePage extends StatefulWidget{
+class HomePubGeneral extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    return _ProfilePageState();
+    return _HomePubGeneral();
   }
 
 }
 
-class _ProfilePageState extends State<ProfilePage>{
+class _HomePubGeneral extends State<HomePubGeneral>{
 
   double _drawerIconSize = 24;
   double _drawerFontSize =17;
@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text("Profile Page",
+        title:const Text("Home",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,

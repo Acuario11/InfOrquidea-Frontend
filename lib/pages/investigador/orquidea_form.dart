@@ -4,6 +4,13 @@ import 'package:login_inforquidea/models/orquidea.dart';
 import 'package:login_inforquidea/providers/orquidea.dart';
 import 'package:login_inforquidea/temas/theme_helper.dart';
 
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+
 import '../profile_page.dart';
 
 class OrquideaForm extends StatefulWidget {
@@ -14,6 +21,11 @@ class OrquideaForm extends StatefulWidget {
 }
 
 class _OrquideaFormState extends State<OrquideaForm> {
+
+  String rutaImagen =
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+  String imagenCargada = "";
+
 //Formkey
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
@@ -63,6 +75,21 @@ class _OrquideaFormState extends State<OrquideaForm> {
                     key: formKey,
                     child: Column(
                       children: [
+                        /*ElevatedButton(
+                            onPressed: () {
+                              abrirSeleccionOrigen();
+                            },
+                            child: Text("Tomar Foto")),
+                        Container(
+                          margin:
+                          EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              image: DecorationImage(
+                                  fit: BoxFit.cover, image: NetworkImage(rutaImagen))),
+                        ),*/
                         const Text(
                           "Foto de la Orquídea",
                           style: TextStyle(color: Colors.grey),
@@ -95,7 +122,9 @@ class _OrquideaFormState extends State<OrquideaForm> {
                                 padding: EdgeInsets.fromLTRB(70, 70, 0, 0),
                                   child:
                                   IconButton(
-                                      onPressed: ()=>_onPressed(), icon: Icon(
+                                      onPressed: () {
+                                        print("a");
+                                      }, icon: Icon(
                                     Icons.add_circle,
                                     color: Colors.grey.shade700,
                                     size: 25.0,
@@ -280,13 +309,87 @@ class _OrquideaFormState extends State<OrquideaForm> {
         (Route<dynamic> route) => false);
   }
 
-  void _onPressed() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    try{
-      if(pickedFile!=null){
-        print(pickedFile.path);
-      }
-
-    } on Exception catch (_) {}
+  Future<void> abrirSeleccionOrigen() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      child: Text("Cámara"),
+                      onTap: () {
+                        obtenerImagen(ImageSource.camera);
+                      },
+                    ),
+                    Padding(padding: EdgeInsets.all(15)),
+                    GestureDetector(
+                      child: Text("Galería"),
+                      onTap: () {
+                        obtenerImagen(ImageSource.gallery);
+                      },
+                    ),
+                  ],
+                )),
+          );
+        });
   }
+
+  void obtenerImagen(ImageSource source) async {
+    File image;
+
+    var picture = await ImagePicker.platform.pickImage(source: source);
+
+    if (picture != null) {
+      image = File(picture.path);
+
+      print("asd: ${picture.path}");
+
+      ImageResponse ir = await subirImagen(image);
+
+      this.imagenCargada = ir.Result;
+
+      if (imagenCargada != '') {
+        setState(() {
+          this.rutaImagen = imagenCargada;
+          this.imagenCargada = '';
+        });
+      }
+    }
+  }
+
+  Future<ImageResponse> subirImagen(File image) async {
+    var request = http.MultipartRequest(
+        "POST", Uri.parse("http://10.0.2.2:8283/image/upload"));
+
+    var picture = await http.MultipartFile.fromPath("photo", image.path);
+
+    request.files.add(picture);
+
+    var response = await request.send();
+
+    var responseData = await response.stream.toBytes();
+
+    String rawResponse = utf8.decode(responseData);
+
+    var jsonResponse = jsonDecode(rawResponse);
+
+    print(rawResponse);
+
+    ImageResponse ir = ImageResponse(jsonResponse);
+
+    return ir;
+  }
+
+}
+
+class ImageResponse {
+
+  String Result = '';
+
+  ImageResponse(Map jsonResponse) {
+    this.Result = jsonResponse["Result"];
+  }
+
 }

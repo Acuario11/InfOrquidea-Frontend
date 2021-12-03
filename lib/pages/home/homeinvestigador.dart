@@ -21,7 +21,7 @@ class _HomeInvestigador extends State<HomeInvestigador>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text("Menú Principal Investigador",
+        title:const Text("Home Investigador",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,
