@@ -15,7 +15,7 @@ class DetailVivero extends StatefulWidget{
 
 class _DetailViveroState extends State<DetailVivero>{
 
-  ViveroModel viveroSeleccionado = ViveroModel.fromValues("", "", "", "", "", "", "", "", "", "");
+  ViveroModel viveroSeleccionado = ViveroModel.fromValues("", "", "", "", "", "", "", "", "", "", "", "");
 
   @override
   void initState() {

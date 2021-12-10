@@ -1,83 +1,91 @@
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_qr_bar_scanner/qr_bar_scanner_camera.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-void main() {
-  runApp(QRScanner());
+class ScanQR extends StatefulWidget {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  _ScanQRState createState() => _ScanQRState();
 }
 
-class QRScanner extends StatelessWidget {
+String qrData = "No data found!";
+var data;
+bool hasdata = false;
+
+class _ScanQRState extends State<ScanQR> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter QR/Bar Code Reader',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter QR/Bar Code Reader'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
-  final String? title;
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  String? _qrInfo = 'Scan a QR/Bar code';
-  bool _camState = false;
-
-  _qrCallback(String? code) {
-    setState(() {
-      _camState = false;
-      _qrInfo = code;
-    });
-  }
-
-  _scanCode() {
-    setState(() {
-      _camState = true;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _scanCode();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title!),
-      ),
-      body: _camState
-          ? Center(
-        child: SizedBox(
-          height: 1000,
-          width: 500,
-          child: QRBarScannerCamera(
-            onError: (context, error) => Text(
-              error.toString(),
-              style: TextStyle(color: Colors.red),
-            ),
-            qrCodeCallback: (code) {
-              _qrCallback(code);
-            },
+    return Hero(
+      tag: "Scan QR",
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("QR Scanner"),
+        ),
+        body: Container(
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Text(
+                      "Raw Data:  ${(qrData)}",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.launch_outlined),
+                    onPressed: hasdata
+                        ? () async {
+                      if (await canLaunch(qrData)) {
+                        print(qrData);
+                        await launch(qrData);
+                      } else {
+                        throw 'Could not launch ';
+                      }
+                    }
+                        : null,
+                  ),
+                ],
+              ),
+              SizedBox(height: 15),
+              Container(
+                width: ((MediaQuery.of(context).size.width) / 2) - 45,
+                height: 35,
+                child: OutlineButton(
+                  focusColor: Colors.red,
+                  highlightColor: Colors.blue,
+                  hoverColor: Colors.lightBlue[100],
+                  splashColor: Colors.blue,
+                  borderSide: BorderSide(
+                    width: 3,
+                    color: Colors.blue,
+                  ),
+                  shape: StadiumBorder(),
+                  child: Text(
+                    "Scan QR",
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  onPressed: () async {
+                    var options = ScanOptions(
+                      autoEnableFlash: true,
+                    );
+                    var data = await BarcodeScanner.scan(options: options);
+                    setState(() {
+                      qrData = data.rawContent.toString();
+                      hasdata = true;
+                    });
+                  },
+                ),
+              ),
+            ],
           ),
         ),
-      )
-          : Center(
-        child: Text(_qrInfo!),
       ),
     );
   }

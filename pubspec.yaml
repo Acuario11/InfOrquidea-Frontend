@@ -38,8 +38,17 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   otp_text_field: ^1.1.1
   http: ^0.13.4
-  flutter_qr_bar_scanner: ^3.0.2
   image_picker: ^0.7.2+1
+  location: any
+  flutter_qr_bar_scanner: ^3.0.2
+  qr_flutter: ^4.0.0
+  url_launcher: ^6.0.17
+  barcode_scan: any
+  mapbox_gl: ^0.7.0
+
+
+
+
 
 
 

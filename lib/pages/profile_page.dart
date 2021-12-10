@@ -124,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage>{
                 leading: Icon(Icons.qr_code_outlined, size: _drawerIconSize,color: Theme.of(context).primaryColorDark,),
                 title: Text('Escanea Qr',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).primaryColorDark),),
                 onTap: () {
-                  Navigator.push( context, MaterialPageRoute(builder: (context) => QRScanner()),);
+                  Navigator.push( context, MaterialPageRoute(builder: (context) => ScanQR()),);
                 },
               ),
 

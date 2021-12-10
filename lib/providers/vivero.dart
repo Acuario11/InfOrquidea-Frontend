@@ -20,6 +20,8 @@ class ViveroProvider {
           "region": vivero.region,
           "direccion": vivero.direccion,
           "telefono": vivero.telefono,
+          "latitud": vivero.latitud,
+          "longitud": vivero.longitud,
           "estado": "1"
         }));
 

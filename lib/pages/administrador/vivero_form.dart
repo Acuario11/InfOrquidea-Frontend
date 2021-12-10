@@ -1,7 +1,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:login_inforquidea/models/vivero.dart';
+import 'package:login_inforquidea/pages/home/homeadministrador.dart';
+import 'package:login_inforquidea/pages/home/homeadmvivero.dart';
 import 'package:login_inforquidea/providers/vivero.dart';
 import 'package:login_inforquidea/temas/theme_helper.dart';
 
@@ -18,6 +21,15 @@ class ViveroForm extends StatefulWidget{
 class _ViveroFormState extends State<ViveroForm>{
   //Formkey
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Location location = new Location();
+  late bool _serviceEnabled;
+  late PermissionStatus _permissionGranted;
+  late LocationData _locationData;
+  bool _isListenLocation=false,_isGetLocation=false;
+
+  double latitud = 0;
+  double longitud = 0;
+
 
   String fotoV ="";
   String nombre ="";
@@ -196,6 +208,86 @@ class _ViveroFormState extends State<ViveroForm>{
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         const SizedBox(height: 20.0),
+
+                        StreamBuilder(
+                            stream: location.onLocationChanged,
+                            builder: (context, snapshot){
+                              if(snapshot.connectionState != ConnectionState.waiting)
+                              {
+                                var data = snapshot.data as LocationData;
+                                latitud = data.latitude!;
+                                longitud = data.longitude!;
+                                return Container(
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.url,
+                                    decoration: ThemeHelper().textInputDecoration(
+                                        'Latitud',
+                                        'Latitud'),
+                                    controller: TextEditingController(text: "${data.latitude}"),
+                                  ),
+                                  decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                                );
+
+                              }
+                              else return Center(child: CircularProgressIndicator(),);
+                            }),
+
+
+                        const SizedBox(height: 20.0),
+
+                        StreamBuilder(
+                            stream: location.onLocationChanged,
+                            builder: (context, snapshot){
+                              if(snapshot.connectionState != ConnectionState.waiting)
+                              {
+                                var data = snapshot.data as LocationData;
+                                latitud = data.latitude!;
+                                longitud = data.longitude!;
+                                return Container(
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.url,
+                                    decoration: ThemeHelper().textInputDecoration(
+                                        'Longitud',
+                                        'Longitud'),
+                                    controller: TextEditingController(text: "${data.longitude}"),
+                                  ),
+                                  decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                                );
+
+                              }
+                              else return Center(child: CircularProgressIndicator(),);
+                            }),
+
+                        const SizedBox(height: 20.0),
+
+
+                  //https://www.youtube.com/watch?v=5TrH52M9Pg8 location obtener
+                        //https://www.youtube.com/watch?v=2p4snh1-JQM
+
+                  /*Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              //style: ThemeHelper().buttonStyle(),
+                              child: Padding(
+                                padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                                child: Text(
+                                  "OBTENER POSICIÓN".toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {},
+                            ),
+                            SizedBox(width: 15,),
+                          ],
+
+                        ),*/
+                        const SizedBox(height: 10.0),
                         Container(
                           decoration:
                           ThemeHelper().buttonBoxDecoration(context),
@@ -258,16 +350,38 @@ class _ViveroFormState extends State<ViveroForm>{
   }
 
   guardarVivero() async {
+
+    _serviceEnabled = await location.serviceEnabled();
+    if(!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if(_serviceEnabled) return;
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if(_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if(_permissionGranted != PermissionStatus.granted) return;
+    }
+    _locationData = await location.getLocation();
+
     ViveroModel vivero = ViveroModel.fromValues("", fotoV, nombre, tipo,
-        distrito , provincia , region , direccion , telefono , "1");
+        distrito , provincia , region , direccion , telefono , _locationData.latitude.toString(), _locationData.longitude.toString(), "1");
 
     ViveroProvider vp = ViveroProvider();
+
+
 
     //Create
     ViveroCreateResponse ocr = await vp.crearVivero(vivero);
 
+    setState(() {
+      _isGetLocation= true;
+
+    });
+
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => ProfilePage()),
+        MaterialPageRoute(builder: (context) => HomeAdministrador()),
             (Route<dynamic> route) => false);
+
   }
 }

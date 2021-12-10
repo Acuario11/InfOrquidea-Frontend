@@ -2,7 +2,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_inforquidea/models/auth.dart';
+import 'package:login_inforquidea/providers/auth.dart';
 import 'package:login_inforquidea/temas/theme_helper.dart';
+
+import '../splash_screen.dart';
 
 class InvestigadorForm extends StatefulWidget{
   @override
@@ -15,6 +19,13 @@ class InvestigadorForm extends StatefulWidget{
 class _InvestigadorFormState extends State<InvestigadorForm>{
   //Formkey
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  String nombre = "";
+  String apellido = "";
+  String celular = "";
+
+  String usuario = "";
+  String clave = "";
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +112,7 @@ class _InvestigadorFormState extends State<InvestigadorForm>{
                                 'Nombres ',
                                 'Ingresa nombres del Investigador'),
                             onSaved: (value) {
-                              //nombre = value!;
+                              nombre = value!;
                             },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
@@ -113,7 +124,7 @@ class _InvestigadorFormState extends State<InvestigadorForm>{
                                 'Apellidos ',
                                 'Ingresa apellidos del Investigador'),
                             onSaved: (value) {
-                              //nombre = value!;
+                              apellido = value!;
                             },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
@@ -126,7 +137,7 @@ class _InvestigadorFormState extends State<InvestigadorForm>{
                                 'Celular ',
                                 'Ingresa el Celular del Investigador'),
                             onSaved: (value) {
-                             // tipo = value!;
+                             celular = value!;
                             },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
@@ -138,7 +149,7 @@ class _InvestigadorFormState extends State<InvestigadorForm>{
                             decoration: ThemeHelper().textInputDecoration(
                                 'Usuario', 'Ingresa el usuario del Investigador'),
                             onSaved: (value) {
-                              // distrito  = value!;
+                              usuario  = value!;
                             },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
@@ -150,7 +161,7 @@ class _InvestigadorFormState extends State<InvestigadorForm>{
                             decoration: ThemeHelper().textInputDecoration(
                                 'Contraseña', 'Ingresa la contraseña del Investigador'),
                             onSaved: (value) {
-                              //provincia  = value!;
+                              clave  = value!;
                             },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
@@ -178,7 +189,7 @@ class _InvestigadorFormState extends State<InvestigadorForm>{
                                 formKey.currentState!.save();
                                 //create investigador
                                 // fotoV = "vivero123.jpg";
-                                //guardarVivero();
+                                guardarInvestigador();
                               }
                             },
                           ),
@@ -216,5 +227,31 @@ class _InvestigadorFormState extends State<InvestigadorForm>{
       ),
     );
   }
+  
+  guardarInvestigador() async {
+    
+    PersonaModel pm = PersonaModel.fromValues("", "foto.png", nombre, apellido, celular, "1");
+    
+    AuthProvider ap = AuthProvider();
+    
+    PersonaCreateResponse pcr = await ap.crearPersona(pm);
+    
+    UsuarioModel um = UsuarioModel.fromValues("", usuario, clave, pcr.persona.id, "1");
+    
+    UsuarioCreateResponse ucr = await ap.crearUsuario(um);
+    
+    UsuRolModel urm = UsuRolModel.fromValues("", ucr.usuario.id, "61a67c2484750e4ed21eefb8", "1");
 
+    UsuRolCreateResponse urcr = await ap.crearUsuRol(urm);
+
+    print("USUROL ${urm.usuarioId}");
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SplashScreen(title: "Splash Screen",)));
+    
+  }
+  
+  //https://www.youtube.com/watch?v=hR0VLfiM8aI
+  //https://www.youtube.com/watch?v=lbu9nMuiYXY
+  //buscador https://www.youtube.com/watch?v=G_sZ4gNh63s&t=2562s
+  //https://www.youtube.com/watch?v=RcgGhUMpBvg
 }

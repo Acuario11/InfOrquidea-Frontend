@@ -87,7 +87,7 @@ class _HomeAdministrador extends State<HomeAdministrador>{
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.filter_vintage_outlined, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
+                leading: Icon(Icons.person_add_alt_1, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
                 title: Text('Registrar Investigador', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => InvestigadorForm()),);
@@ -95,7 +95,7 @@ class _HomeAdministrador extends State<HomeAdministrador>{
               ),
               Divider(color: Theme.of(context).primaryColor, height: 1,),
               ListTile(
-                leading: Icon(Icons.water_damage, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
+                leading: Icon(Icons.person_search, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
                 title: Text('Buscar Investigador', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
                 onTap: (){
                   //Navigator.push(context, MaterialPageRoute(builder: (context) => VerVivero()),);
@@ -103,7 +103,7 @@ class _HomeAdministrador extends State<HomeAdministrador>{
               ),
               Divider(color: Theme.of(context).primaryColor, height: 1,),
               ListTile(
-                leading: Icon(Icons.qr_code_outlined, size: _drawerIconSize,color: Theme.of(context).primaryColorDark,),
+                leading: Icon(Icons.add_business, size: _drawerIconSize,color: Theme.of(context).primaryColorDark,),
                 title: Text('Registrar Vivero',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).primaryColorDark),),
                 onTap: () {
                   Navigator.push( context, MaterialPageRoute(builder: (context) => ViveroForm()),);
@@ -111,7 +111,7 @@ class _HomeAdministrador extends State<HomeAdministrador>{
               ),
               Divider(color: Theme.of(context).primaryColor, height: 1,),
               ListTile(
-                leading: Icon(Icons.qr_code_outlined, size: _drawerIconSize,color: Theme.of(context).primaryColorDark,),
+                leading: Icon(Icons.manage_search_rounded, size: _drawerIconSize,color: Theme.of(context).primaryColorDark,),
                 title: Text('Buscar Vivero',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).primaryColorDark),),
                 onTap: () {
                   //Navigator.push( context, MaterialPageRoute(builder: (context) => MyApp()),);

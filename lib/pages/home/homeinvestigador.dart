@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_inforquidea/pages/investigador/buscar_orquidea.dart';
 import 'package:login_inforquidea/pages/investigador/orquidea_form.dart';
 import 'package:login_inforquidea/pages/widgets/header_widget.dart';
 
@@ -95,15 +96,15 @@ class _HomeInvestigador extends State<HomeInvestigador>{
               ),
               Divider(color: Theme.of(context).primaryColor, height: 1,),
               ListTile(
-                leading: Icon(Icons.water_damage, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
+                leading: Icon(Icons.saved_search, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
                 title: Text('Buscar Orquidea', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
                 onTap: (){
-                  //Navigator.push(context, MaterialPageRoute(builder: (context) => VerVivero()),);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchOrquidea()),);
                 },
               ),
               Divider(color: Theme.of(context).primaryColor, height: 1,),
               ListTile(
-                leading: Icon(Icons.qr_code_outlined, size: _drawerIconSize,color: Theme.of(context).primaryColorDark,),
+                leading: Icon(Icons.web, size: _drawerIconSize,color: Theme.of(context).primaryColorDark,),
                 title: Text('Ingresar a web',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).primaryColorDark),),
                 onTap: () {
                   //Navigator.push( context, MaterialPageRoute(builder: (context) => ViveroForm()),);

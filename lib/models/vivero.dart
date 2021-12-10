@@ -5,7 +5,7 @@ import 'dart:convert';
 class ViveroCreateResponse {
   //Vacio
   ViveroModel vivero =
-  ViveroModel.fromValues("", "", "", "", "", "", "", "", "", "");
+  ViveroModel.fromValues("", "", "", "", "", "", "", "", "", "", "", "");
 
   ViveroCreateResponse.fromAPI(Map jsonViveroResponse) {
     //Datos de la Api (Respuesta)
@@ -17,7 +17,7 @@ class ViveroCreateResponse {
 class ViveroByIDResponse {
   //Vacio
   ViveroModel vivero =
-  ViveroModel.fromValues("", "", "", "", "", "", "", "", "", "");
+  ViveroModel.fromValues("", "", "", "", "", "", "", "", "", "", "", "");
 
   ViveroByIDResponse.fromAPI(Map jsonViveroResponse) {
     //Datos de la Api (Respuesta)
@@ -49,6 +49,8 @@ class ViveroModel {
   String region ="";
   String direccion ="";
   String telefono ="";
+  String latitud = "";
+  String longitud = "";
   String estado = "";
 
   ViveroModel(Map jsonViveroResponse) {
@@ -61,6 +63,8 @@ class ViveroModel {
     this.region = jsonViveroResponse["region"];
     this.direccion = jsonViveroResponse["direccion"];
     this.telefono = jsonViveroResponse["telefono"];
+    this.latitud = jsonViveroResponse["latitud"];
+    this.longitud = jsonViveroResponse["longitud"];
     this.estado = jsonViveroResponse["estado"];
   }
 
@@ -74,6 +78,8 @@ class ViveroModel {
       String region,
       String direccion,
       String telefono,
+      String latitud,
+      String longitud,
       String estado)
   {
     this.id = id;
@@ -85,6 +91,8 @@ class ViveroModel {
     this.region = region;
     this.direccion = direccion;
     this.telefono = telefono;
+    this.latitud = latitud;
+    this.longitud = longitud;
     this.estado = estado;
   }
 }

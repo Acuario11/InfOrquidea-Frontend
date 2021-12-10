@@ -3,6 +3,10 @@
    <application
         android:label="login_inforquidea"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+           android:name="com.mapbox.token"
+           android:value="pk.eyJ1IjoibWFkYWljaHVjbyIsImEiOiJja3VlY2VkYjAxajd2MnFuengyZG85Y3JnIn0.AX3QQXwCnpPq2HXYyD9N2w"
+           />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

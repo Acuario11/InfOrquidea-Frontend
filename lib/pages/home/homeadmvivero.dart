@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:login_inforquidea/pages/adminvivero/registrar_precio.dart';
+import 'package:login_inforquidea/pages/scanner/qr_generator.dart';
 import 'package:login_inforquidea/pages/widgets/header_widget.dart';
 
 import '../splash_screen.dart';
@@ -86,21 +88,29 @@ class _HomeAdmVivero extends State<HomeAdmVivero>{
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.filter_vintage_outlined, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
+                leading: Icon(Icons.monetization_on, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
                 title: Text('Registrar Precio', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
                 onTap: (){
-                  //Navigator.push(context, MaterialPageRoute(builder: (context) => OrquideaForm()),);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrarPrecio()),);
                 },
               ),
               Divider(color: Theme.of(context).primaryColor, height: 1,),
               ListTile(
-                leading: Icon(Icons.water_damage, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
+                leading: Icon(Icons.local_florist, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
                 title: Text('Buscar Orquidea', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
                 onTap: (){
                   //Navigator.push(context, MaterialPageRoute(builder: (context) => VerVivero()),);
                 },
               ),
 
+              Divider(color: Theme.of(context).primaryColor, height: 1,),
+              ListTile(
+                leading: Icon(Icons.qr_code_2_outlined, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
+                title: Text('Generar QR', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => QRGenerator()),);
+                },
+              ),
 
               Divider(color: Theme.of(context).primaryColor, height: 1,),
 
@@ -112,7 +122,6 @@ class _HomeAdmVivero extends State<HomeAdmVivero>{
                 },
               ),
               Divider(color: Theme.of(context).primaryColor, height: 1,),
-
             ],
           ),
         ),

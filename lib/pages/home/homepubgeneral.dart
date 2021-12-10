@@ -5,6 +5,7 @@ import 'package:login_inforquidea/pages/orquideas/c_orquidea.dart';
 import 'package:login_inforquidea/pages/scanner/qr_escanner.dart';
 
 import 'package:login_inforquidea/pages/splash_screen.dart';
+import 'package:login_inforquidea/pages/viveros/fullscreenmap.dart';
 import 'package:login_inforquidea/pages/viveros/v_viveros.dart';
 import 'package:login_inforquidea/pages/widgets/header_widget.dart';
 
@@ -92,7 +93,7 @@ class _HomePubGeneral extends State<HomePubGeneral>{
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.filter_vintage_outlined, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
+                leading: Icon(Icons.local_florist, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
                 title: Text('Orquideas', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => CreateOrquidea()),);
@@ -109,10 +110,19 @@ class _HomePubGeneral extends State<HomePubGeneral>{
               Divider(color: Theme.of(context).primaryColor, height: 1,),
 
               ListTile(
+                leading: Icon(Icons.add_location_alt_sharp, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
+                title: Text('Mapa Víveros', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => FullScreenMap()),);
+                },
+              ),
+              Divider(color: Theme.of(context).primaryColor, height: 1,),
+
+              ListTile(
                 leading: Icon(Icons.qr_code_outlined, size: _drawerIconSize,color: Theme.of(context).primaryColorDark,),
                 title: Text('Escanea Qr',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).primaryColorDark),),
                 onTap: () {
-                  Navigator.push( context, MaterialPageRoute(builder: (context) => QRScanner()),);
+                  Navigator.push( context, MaterialPageRoute(builder: (context) => ScanQR()),);
                 },
               ),
               Divider(color: Theme.of(context).primaryColor, height: 1,),
