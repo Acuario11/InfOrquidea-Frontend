@@ -11,6 +11,8 @@ import 'package:login_inforquidea/pages/registration_page.dart';
 import 'package:login_inforquidea/providers/auth.dart';
 import 'package:login_inforquidea/temas/theme_helper.dart';
 
+import 'package:login_inforquidea/providers/globalsUser.dart' as globalsUser;
+
 import 'forgot_password_page.dart';
 import 'home/homeadministrador.dart';
 import 'widgets/header_widget.dart';
@@ -162,8 +164,13 @@ class _LoginPageState extends State<LoginPage>{
       print("Login Exitoso :D");
 
       print(ar.message);
+      print(ar.foto);
+      print(ar.nombre);
       print(ar.usuarioId);
       print(ar.token);
+
+      globalsUser.urlFotoUsuarioActual = ar.foto;
+      globalsUser.nombreUsuarioActual = ar.nombre;
 
       //////////////////////////////////
       //Redireccion dependiendo de Rol//

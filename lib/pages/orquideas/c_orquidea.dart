@@ -228,10 +228,10 @@ class _CreateOrquideaState extends State<CreateOrquidea> {
                     height: 200,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(24.0),
-                      child: const Image(
+                      child: Image(
                         fit: BoxFit.contain,
                         alignment: Alignment.topRight,
-                        image: AssetImage('assets/images/catleya.png'),
+                        image: NetworkImage('${orquideasList[i].fotoO}'),
                       ),
                     ),
                   ),

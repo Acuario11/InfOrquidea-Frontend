@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:login_inforquidea/pages/orquideas/c_orquidea.dart';
 import 'package:login_inforquidea/pages/scanner/qr_escanner.dart';
 
+import 'package:login_inforquidea/providers/globalsUser.dart' as globalsUser;
+
 import 'package:login_inforquidea/pages/splash_screen.dart';
 import 'package:login_inforquidea/pages/viveros/fullscreenmap.dart';
 import 'package:login_inforquidea/pages/viveros/v_viveros.dart';
@@ -78,16 +80,12 @@ class _HomePubGeneral extends State<HomePubGeneral>{
             children: [
               DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomRight,
-                    stops: [0.0, 1.0],
-                    colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor,],
-                  ),
-                ),
+                    image: DecorationImage(
+                        image: NetworkImage(globalsUser.urlFotoUsuarioActual),
+                        fit: BoxFit.cover)),
                 child: Container(
                   alignment: Alignment.bottomLeft,
-                  child: Text("inforquidea@gmail.com",
+                  child: Text(globalsUser.nombreUsuarioActual,
                     style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -161,6 +159,19 @@ class _HomePubGeneral extends State<HomePubGeneral>{
               child: Column(
                 children: [
                   Container(
+                    child: const Center(
+                      child: ClipRRect(
+                        //child: Icon(Icons.android_outlined, size: 128,),
+                        //child: Icon(Icons.filter_vintage_outlined, size: 128,),
+                          child:
+                          Image(
+                              height: 180,
+                              width: 200 ,
+                              image: AssetImage('assets/images/infor.png'))
+                      ),
+                    ),
+                  ),
+                  /*Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
@@ -171,12 +182,12 @@ class _HomePubGeneral extends State<HomePubGeneral>{
                       ],
                     ),
                     child: Icon(Icons.person, size: 80, color: Colors.grey.shade300,),
-                  ),
-                  SizedBox(height: 20,),
-                  Text('Sergio Olortegui', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
-                  SizedBox(height: 20,),
-                  Text('Musas Amázonicas', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                  ),*/
                   SizedBox(height: 10,),
+                  Text('Bienvenido a InfOrquidea', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                  //SizedBox(height: 10,),
+                  //Text('Usted es Público General', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                  //SizedBox(height: 5,),
                   Container(
                     padding: EdgeInsets.all(10),
                     child: Column(
@@ -185,7 +196,7 @@ class _HomePubGeneral extends State<HomePubGeneral>{
                           padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
                           alignment: Alignment.topLeft,
                           child: const Text(
-                            "Información de Usuario",
+                            "Puedes realizar estas cosas",
                             style: TextStyle(
                               color: Colors.black87,
                               fontWeight: FontWeight.w500,
@@ -208,27 +219,27 @@ class _HomePubGeneral extends State<HomePubGeneral>{
                                         const ListTile(
                                           contentPadding: EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 4),
-                                          leading: Icon(Icons.my_location),
-                                          title: Text("Location"),
-                                          subtitle: Text("MOYOBAMBA"),
+                                          leading: Icon(Icons.local_florist),
+                                          title: Text("Ver Información"),
+                                          subtitle: Text("Orquideas"),
                                         ),
                                         const ListTile(
-                                          leading: Icon(Icons.email),
-                                          title: Text("Email"),
-                                          subtitle: Text("inforquidea@gmail.com"),
-                                        ),
-
-                                        const ListTile(
-                                          leading: Icon(Icons.phone),
-                                          title: Text("Phone"),
-                                          subtitle: Text("123456789"),
+                                          leading: Icon(Icons.water_damage),
+                                          title: Text("Ver Información"),
+                                          subtitle: Text("Viveros"),
                                         ),
 
                                         const ListTile(
-                                          leading: Icon(Icons.person),
-                                          title: Text("About Me"),
+                                          leading: Icon(Icons.add_location_alt_sharp),
+                                          title: Text("Ver"),
+                                          subtitle: Text("Ubicaciones de los Viveros"),
+                                        ),
+
+                                        const ListTile(
+                                          leading: Icon(Icons.qr_code_outlined),
+                                          title: Text("Escanear"),
                                           subtitle: Text(
-                                              "Actualmente trabajo en Musas Amazónicas y la AOAM con el proyecto de InfOrquidea"),
+                                              "Código Qr"),
                                         ),
 
                                       ],

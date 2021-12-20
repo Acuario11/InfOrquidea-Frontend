@@ -1,8 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:login_inforquidea/models/auth.dart';
 import 'package:login_inforquidea/pages/administrador/r_investigador_form.dart';
 import 'package:login_inforquidea/pages/administrador/vivero_form.dart';
 import 'package:login_inforquidea/pages/widgets/header_widget.dart';
+
+import 'package:login_inforquidea/providers/globalsUser.dart' as globalsUser;
 
 import '../splash_screen.dart';
 
@@ -16,6 +19,9 @@ class HomeAdministrador extends StatefulWidget{
 class _HomeAdministrador extends State<HomeAdministrador>{
   double _drawerIconSize = 24;
   double _drawerFontSize =17;
+
+  PersonaModel personaSeleccionada =
+    PersonaModel.fromValues("", "", "", "", "", "");
 
   @override
   Widget build(BuildContext context) {
@@ -72,16 +78,12 @@ class _HomeAdministrador extends State<HomeAdministrador>{
             children: [
               DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomRight,
-                    stops: [0.0, 1.0],
-                    colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor,],
-                  ),
-                ),
+                    image: DecorationImage(
+                        image: NetworkImage(globalsUser.urlFotoUsuarioActual),
+                        fit: BoxFit.cover)),
                 child: Container(
                   alignment: Alignment.bottomLeft,
-                  child: Text("inforquidea@gmail.com",
+                  child: Text(globalsUser.nombreUsuarioActual,
                     style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -145,6 +147,19 @@ class _HomeAdministrador extends State<HomeAdministrador>{
               child: Column(
                 children: [
                   Container(
+                    child: const Center(
+                      child: ClipRRect(
+                        //child: Icon(Icons.android_outlined, size: 128,),
+                        //child: Icon(Icons.filter_vintage_outlined, size: 128,),
+                          child:
+                          Image(
+                              height: 180,
+                              width: 200 ,
+                              image: AssetImage('assets/images/infor.png'))
+                      ),
+                    ),
+                  ),
+                  /*Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
@@ -155,11 +170,11 @@ class _HomeAdministrador extends State<HomeAdministrador>{
                       ],
                     ),
                     child: Icon(Icons.person, size: 80, color: Colors.grey.shade300,),
-                  ),
+                  ),*/
                   SizedBox(height: 20,),
-                  Text('Sergio Olortegui', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                  Text('Bienvenido a InfOrquidea', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
                   SizedBox(height: 20,),
-                  Text('Musas Amázonicas', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                  Text('Usted es administrador', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                   SizedBox(height: 10,),
                   Container(
                     padding: EdgeInsets.all(10),
@@ -169,7 +184,7 @@ class _HomeAdministrador extends State<HomeAdministrador>{
                           padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
                           alignment: Alignment.topLeft,
                           child: const Text(
-                            "Información de Usuario",
+                            "Puedes realizar estas cosas",
                             style: TextStyle(
                               color: Colors.black87,
                               fontWeight: FontWeight.w500,
@@ -178,6 +193,8 @@ class _HomeAdministrador extends State<HomeAdministrador>{
                             textAlign: TextAlign.left,
                           ),
                         ),
+
+
                         Card(
                           child: Container(
                             alignment: Alignment.topLeft,
@@ -192,28 +209,23 @@ class _HomeAdministrador extends State<HomeAdministrador>{
                                         const ListTile(
                                           contentPadding: EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 4),
-                                          leading: Icon(Icons.my_location),
-                                          title: Text("Location"),
-                                          subtitle: Text("MOYOBAMBA"),
+                                          leading: Icon(Icons.person_add_alt_1),
+                                          title: Text("Registrar"),
+                                          subtitle: Text("Investigadores"),
                                         ),
                                         const ListTile(
-                                          leading: Icon(Icons.work),
-                                          title: Text("Empresa"),
-                                          subtitle: Text("CIFFA Perú"),
+                                          leading: Icon(Icons.add_business),
+                                          title: Text("Registrar"),
+                                          subtitle: Text("Viveros"),
                                         ),
 
-                                        const ListTile(
-                                          leading: Icon(Icons.phone),
-                                          title: Text("Phone"),
-                                          subtitle: Text("123456789"),
+                                        ListTile(
+                                          leading: Icon(Icons.search_sharp),
+                                          title: Text("Buscar"),
+                                          subtitle: Text("Investigadores y Viveros"),
                                         ),
 
-                                        const ListTile(
-                                          leading: Icon(Icons.person),
-                                          title: Text("About Me"),
-                                          subtitle: Text(
-                                              "Actualmente trabajo en Musas Amazónicas y la AOAM con el proyecto de InfOrquidea"),
-                                        ),
+
 
                                       ],
                                     ),
@@ -234,5 +246,6 @@ class _HomeAdministrador extends State<HomeAdministrador>{
       ),
     );
   }
+
 
 }

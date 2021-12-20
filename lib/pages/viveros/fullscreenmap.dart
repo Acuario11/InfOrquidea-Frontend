@@ -43,13 +43,15 @@ class _FullScreenMapState extends State<FullScreenMap>{
       mapController?.addSymbol(SymbolOptions(
           geometry: LatLng(double.parse(viverosList[i].latitud), double.parse(viverosList[i].longitud)),
           iconSize: 2.0,
-          iconImage: 'attraction-15',
+          iconImage: 'garden-11',
+          //iconImage: 'marker-11',
+
           textField: viverosList[i].nombre,
-          textColor: '#cccccc',
+          //textColor: '#cccccc',
           textOffset: Offset(0, 2)
       ));
     }
-
+//https://github.com/mapbox/mapbox-gl-styles
 
 
     return MaterialApp(
@@ -69,7 +71,7 @@ class _FullScreenMapState extends State<FullScreenMap>{
       children: <Widget>[
 
         //Symbolos
-        FloatingActionButton(
+        /*FloatingActionButton(
             heroTag: "btn1",
             child: Icon(Icons.add_circle_outline_outlined),
             onPressed: () {
@@ -82,7 +84,7 @@ class _FullScreenMapState extends State<FullScreenMap>{
                   textOffset: Offset(0, 2)
               ));
             }
-        ),
+        ),*/
         SizedBox(height: 5),
 
         //ZoomIn

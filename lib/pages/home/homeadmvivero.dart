@@ -4,6 +4,8 @@ import 'package:login_inforquidea/pages/adminvivero/registrar_precio.dart';
 import 'package:login_inforquidea/pages/scanner/qr_generator.dart';
 import 'package:login_inforquidea/pages/widgets/header_widget.dart';
 
+import 'package:login_inforquidea/providers/globalsUser.dart' as globalsUser;
+
 import '../splash_screen.dart';
 
 class HomeAdmVivero extends StatefulWidget{
@@ -73,16 +75,12 @@ class _HomeAdmVivero extends State<HomeAdmVivero>{
             children: [
               DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomRight,
-                    stops: [0.0, 1.0],
-                    colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor,],
-                  ),
-                ),
+                    image: DecorationImage(
+                        image: NetworkImage(globalsUser.urlFotoUsuarioActual),
+                        fit: BoxFit.cover)),
                 child: Container(
                   alignment: Alignment.bottomLeft,
-                  child: Text("inforquidea@gmail.com",
+                  child: Text(globalsUser.nombreUsuarioActual,
                     style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -138,6 +136,21 @@ class _HomeAdmVivero extends State<HomeAdmVivero>{
               child: Column(
                 children: [
                   Container(
+
+
+                    child: const Center(
+                      child: ClipRRect(
+                        //child: Icon(Icons.android_outlined, size: 128,),
+                        //child: Icon(Icons.filter_vintage_outlined, size: 128,),
+                          child:
+                          Image(
+                              height: 180,
+                              width: 200 ,
+                              image: AssetImage('assets/images/infor.png'))
+                      ),
+                    ),
+                  ),
+                  /*Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
@@ -148,11 +161,11 @@ class _HomeAdmVivero extends State<HomeAdmVivero>{
                       ],
                     ),
                     child: Icon(Icons.person, size: 80, color: Colors.grey.shade300,),
-                  ),
+                  ),*/
                   SizedBox(height: 20,),
-                  Text('Sergio Olortegui', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                  Text('Bienvenido a InfOrquidea', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
                   SizedBox(height: 20,),
-                  Text('Musas Amázonicas', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                  Text('Usted es Administrador de Vivero', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                   SizedBox(height: 10,),
                   Container(
                     padding: EdgeInsets.all(10),
@@ -162,7 +175,7 @@ class _HomeAdmVivero extends State<HomeAdmVivero>{
                           padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
                           alignment: Alignment.topLeft,
                           child: const Text(
-                            "Información de Usuario",
+                            "Puedes realizar estas cosas",
                             style: TextStyle(
                               color: Colors.black87,
                               fontWeight: FontWeight.w500,
@@ -185,28 +198,22 @@ class _HomeAdmVivero extends State<HomeAdmVivero>{
                                         const ListTile(
                                           contentPadding: EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 4),
-                                          leading: Icon(Icons.my_location),
-                                          title: Text("Location"),
-                                          subtitle: Text("MOYOBAMBA"),
+                                          leading: Icon(Icons.monetization_on),
+                                          title: Text("Registrar"),
+                                          subtitle: Text("Precios de tus orquideas"),
                                         ),
                                         const ListTile(
-                                          leading: Icon(Icons.work),
-                                          title: Text("Empresa"),
-                                          subtitle: Text("CIFFA Perú"),
+                                          leading: Icon(Icons.qr_code_2_outlined),
+                                          title: Text("Generar"),
+                                          subtitle: Text("Códigos QR"),
                                         ),
 
                                         const ListTile(
-                                          leading: Icon(Icons.phone),
-                                          title: Text("Phone"),
-                                          subtitle: Text("123456789"),
+                                          leading: Icon(Icons.search_sharp),
+                                          title: Text("Buscar"),
+                                          subtitle: Text("Orquideas"),
                                         ),
 
-                                        const ListTile(
-                                          leading: Icon(Icons.person),
-                                          title: Text("About Me"),
-                                          subtitle: Text(
-                                              "Actualmente trabajo en Musas Amazónicas y la AOAM con el proyecto de InfOrquidea"),
-                                        ),
 
                                       ],
                                     ),

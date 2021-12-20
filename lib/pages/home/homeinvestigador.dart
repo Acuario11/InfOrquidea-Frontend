@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:login_inforquidea/pages/investigador/buscar_orquidea.dart';
 import 'package:login_inforquidea/pages/investigador/orquidea_form.dart';
 import 'package:login_inforquidea/pages/widgets/header_widget.dart';
+import 'package:login_inforquidea/providers/image.dart';
+import 'package:provider/provider.dart';
+
+import 'package:login_inforquidea/providers/globalsUser.dart' as globalsUser;
 
 import '../splash_screen.dart';
 
@@ -73,16 +77,12 @@ class _HomeInvestigador extends State<HomeInvestigador>{
             children: [
               DrawerHeader(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomRight,
-                    stops: [0.0, 1.0],
-                    colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor,],
-                  ),
-                ),
+                    image: DecorationImage(
+                        image: NetworkImage(globalsUser.urlFotoUsuarioActual),
+                        fit: BoxFit.cover)),
                 child: Container(
                   alignment: Alignment.bottomLeft,
-                  child: Text("inforquidea@gmail.com",
+                  child: Text(globalsUser.nombreUsuarioActual,
                     style: TextStyle(fontSize: 25, color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -91,9 +91,13 @@ class _HomeInvestigador extends State<HomeInvestigador>{
                 leading: Icon(Icons.filter_vintage_outlined, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
                 title: Text('Registrar Orquidea', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).primaryColorDark),),
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrquideaForm()),);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeNotifierProvider(
+                    create: (_) => ImagenSeleccion(),
+                    child: OrquideaForm(),
+                  ),),);
                 },
               ),
+
               Divider(color: Theme.of(context).primaryColor, height: 1,),
               ListTile(
                 leading: Icon(Icons.saved_search, size:_drawerIconSize, color: Theme.of(context).primaryColorDark,),
@@ -138,6 +142,19 @@ class _HomeInvestigador extends State<HomeInvestigador>{
               child: Column(
                 children: [
                   Container(
+                    child: const Center(
+                      child: ClipRRect(
+                        //child: Icon(Icons.android_outlined, size: 128,),
+                        //child: Icon(Icons.filter_vintage_outlined, size: 128,),
+                          child:
+                          Image(
+                              height: 180,
+                              width: 200 ,
+                              image: AssetImage('assets/images/infor.png'))
+                      ),
+                    ),
+                  ),
+                  /*Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
@@ -148,11 +165,11 @@ class _HomeInvestigador extends State<HomeInvestigador>{
                       ],
                     ),
                     child: Icon(Icons.person, size: 80, color: Colors.grey.shade300,),
-                  ),
+                  ),*/
                   SizedBox(height: 20,),
-                  Text('Sergio Olortegui', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                  Text('Bienvenido a InfOrquidea', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
                   SizedBox(height: 20,),
-                  Text('Musas Amázonicas', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                  Text('Usted es Investigador', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                   SizedBox(height: 10,),
                   Container(
                     padding: EdgeInsets.all(10),
@@ -162,7 +179,7 @@ class _HomeInvestigador extends State<HomeInvestigador>{
                           padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
                           alignment: Alignment.topLeft,
                           child: const Text(
-                            "Información de Usuario",
+                            "Puedes realizar estas cosas",
                             style: TextStyle(
                               color: Colors.black87,
                               fontWeight: FontWeight.w500,
@@ -185,27 +202,20 @@ class _HomeInvestigador extends State<HomeInvestigador>{
                                         const ListTile(
                                           contentPadding: EdgeInsets.symmetric(
                                               horizontal: 12, vertical: 4),
-                                          leading: Icon(Icons.my_location),
-                                          title: Text("Location"),
-                                          subtitle: Text("MOYOBAMBA"),
+                                          leading: Icon(Icons.filter_vintage_outlined),
+                                          title: Text("Registrar"),
+                                          subtitle: Text("Orquideas"),
                                         ),
                                         const ListTile(
-                                          leading: Icon(Icons.work),
-                                          title: Text("Empresa"),
-                                          subtitle: Text("CIFFA Perú"),
-                                        ),
-
-                                        const ListTile(
-                                          leading: Icon(Icons.phone),
-                                          title: Text("Phone"),
-                                          subtitle: Text("123456789"),
+                                          leading: Icon(Icons.search_sharp),
+                                          title: Text("Buscar"),
+                                          subtitle: Text("Orquideas"),
                                         ),
 
                                         const ListTile(
-                                          leading: Icon(Icons.person),
-                                          title: Text("About Me"),
-                                          subtitle: Text(
-                                              "Actualmente trabajo en Musas Amazónicas y la AOAM con el proyecto de InfOrquidea"),
+                                          leading: Icon(Icons.web),
+                                          title: Text("Ingresar"),
+                                          subtitle: Text("Web"),
                                         ),
 
                                       ],

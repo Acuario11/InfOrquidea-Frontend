@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.0.17
   barcode_scan: any
   mapbox_gl: ^0.7.0
+  provider: ^6.0.1
 
 
 

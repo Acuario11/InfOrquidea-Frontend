@@ -1,6 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login_inforquidea/models/orquidea.dart';
+import 'package:login_inforquidea/pages/home/homeadministrador.dart';
+import 'package:login_inforquidea/pages/home/homeinvestigador.dart';
+import 'package:login_inforquidea/providers/image.dart';
 import 'package:login_inforquidea/providers/orquidea.dart';
 import 'package:login_inforquidea/temas/theme_helper.dart';
 
@@ -10,6 +15,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../profile_page.dart';
 
@@ -30,6 +36,15 @@ class _OrquideaFormState extends State<OrquideaForm> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
 
+  _imagenSeleccion(String imgsel) async {
+
+    final base64Img = await File(imgsel).readAsBytesSync().toString();
+    Uint8List bytesList = base64Decode(base64Img);
+    Image img = Image.memory(base64Decode(base64Img));
+    return img.image;
+    //return MemoryImage(bytesList);
+  }
+
   String fotoO = "";
   String nombre = "";
   String tipo = "";
@@ -41,6 +56,7 @@ class _OrquideaFormState extends State<OrquideaForm> {
 
   @override
   Widget build(BuildContext context) {
+    final imgsel = Provider.of<ImagenSeleccion>(context).getimg;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -75,73 +91,37 @@ class _OrquideaFormState extends State<OrquideaForm> {
                     key: formKey,
                     child: Column(
                       children: [
-                        /*ElevatedButton(
+                        ElevatedButton(
                             onPressed: () {
                               abrirSeleccionOrigen();
+
                             },
                             child: Text("Tomar Foto")),
+
+                         //image: NetworkImage(imagenCargada)
+                         //image: (imagenCargada.isNotEmpty)? _imagenSeleccion() : NetworkImage(imagenCargada)
+
                         Container(
                           margin:
-                          EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: MediaQuery.of(context).size.height * 0.7,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                  fit: BoxFit.cover, image: NetworkImage(rutaImagen))),
-                        ),*/
+                          EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          child: (imgsel.isNotEmpty)? Image.file(
+                            File(imgsel),
+                            fit: BoxFit.cover
+                              ) : Container()
+                        ),
+                        //imagen == null ? Container() : Image.file(imagen),
                         const Text(
                           "Foto de la Orquídea",
                           style: TextStyle(color: Colors.grey),
                         ),
-                        GestureDetector(
-                          child: Stack(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  border:
-                                      Border.all(width: 5, color: Colors.white),
-                                  color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 20,
-                                      offset: Offset(5, 5),
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  Icons.image,
-                                  color: Colors.grey.shade300,
-                                  size: 80.0,
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(70, 70, 0, 0),
-                                  child:
-                                  IconButton(
-                                      onPressed: () {
-                                        print("a");
-                                      }, icon: Icon(
-                                    Icons.add_circle,
-                                    color: Colors.grey.shade700,
-                                    size: 25.0,
-                                  )
-                                /*child: IconButton.icon(
-                                    IconButton(onPressed: onPressed, icon: icon)
-
-                                  onPressed: () {  }, icon: Icon(
-                                  Icons.add_circle,
-                                  color: Colors.grey.shade700,
-                                  size: 25.0,
-                                ), label: Text(""),*/
-                                ),
-                              ),
-                            ],
-                          ),
+                        Text(
+                          Provider.of<ImagenSeleccion>(context).getimg,
+                          style: TextStyle(color: Colors.grey),
                         ),
+
+
                         const SizedBox(
                           height: 20,
                         ),
@@ -255,7 +235,8 @@ class _OrquideaFormState extends State<OrquideaForm> {
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!.save();
                                 //create orquidea
-                                fotoO = "123.jpg";
+                                fotoO = "";
+
                                 guardarOrquidea();
                               }
                             },
@@ -295,6 +276,7 @@ class _OrquideaFormState extends State<OrquideaForm> {
     );
   }
 
+
   guardarOrquidea() async {
     OrquideaModel orquidea = OrquideaModel.fromValues("", fotoO, nombre, tipo,
         origen, familia, especie, cFloracion, ubicacion, "1");
@@ -303,9 +285,15 @@ class _OrquideaFormState extends State<OrquideaForm> {
 
     //Create
     OrquideaCreateResponse ocr = await op.crearOrquidea(orquidea);
+    print("ocr: ${ocr.orquidea.id}");
+
+    //final String image = Provider.of<>(context)
+    final String imgsel = Provider.of<ImagenSeleccion>(context, listen: false).getimg;
+    //await Future.delayed(Duration(seconds: 2));
+    await subirImagen(File(imgsel), ocr.orquidea.id);
 
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => ProfilePage()),
+        MaterialPageRoute(builder: (context) => HomeInvestigador()),
         (Route<dynamic> route) => false);
   }
 
@@ -314,25 +302,72 @@ class _OrquideaFormState extends State<OrquideaForm> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            contentPadding: EdgeInsets.all(0),
             content: SingleChildScrollView(
                 child: Column(
                   children: [
-                    GestureDetector(
-                      child: Text("Cámara"),
-                      onTap: () {
+                    InkWell(
+                      onTap: (){
                         obtenerImagen(ImageSource.camera);
                       },
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(width: 1, color: Colors.grey))
+                        ),
+                        child: Row(
+                          children: const [
+                            Expanded(
+                              child: Text('Tomar una foto', style: TextStyle( fontSize: 16),),
+                            ),
+                            Icon(Icons.camera_alt, color: Colors.blue)
+                          ],
+                        ),
+
+                      ),
                     ),
-                    Padding(padding: EdgeInsets.all(15)),
-                    GestureDetector(
-                      child: Text("Galería"),
-                      onTap: () {
+                    InkWell(
+                      onTap: (){
                         obtenerImagen(ImageSource.gallery);
                       },
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        child: Row(
+                          children: const [
+                            Expanded(
+                              child: Text('Seleccionar una foto', style: TextStyle( fontSize: 16),),
+                            ),
+                            Icon(Icons.image_search_sharp, color: Colors.blue)
+                          ],
+                        ),
+
+                      ),
+                    ),
+                    InkWell(
+                      onTap: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.red
+                        ),
+                        child: Row(
+                          children: const [
+                            Expanded(
+                              child: Text('Cancelar', style: TextStyle( fontSize: 16, color: Colors.white),
+                              textAlign: TextAlign.center,),
+                            ),
+                            Icon(Icons.cancel, color: Colors.white)
+                          ],
+                        ),
+
+                      ),
                     ),
                   ],
-                )),
-          );
+                ),
+
+          ),);
         });
   }
 
@@ -340,54 +375,48 @@ class _OrquideaFormState extends State<OrquideaForm> {
     File image;
 
     var picture = await ImagePicker.platform.pickImage(source: source);
-
     if (picture != null) {
       image = File(picture.path);
-
       print("asd: ${picture.path}");
+      Provider.of<ImagenSeleccion>(context, listen: false).setimg = picture.path;
 
-      ImageResponse ir = await subirImagen(image);
-
-      this.imagenCargada = ir.Result;
-
-      if (imagenCargada != '') {
+      //ImageResponse ir = await subirImagen(image);
+      imagenCargada=picture.path;
+      //this.imagenCargada = ir.Result;
+      print("=========================================================================");
+      /*if (imagenCargada != '') {
         setState(() {
           this.rutaImagen = imagenCargada;
           this.imagenCargada = '';
         });
-      }
+      }*/
     }
   }
 
-  Future<ImageResponse> subirImagen(File image) async {
+  Future<ImageResponse> subirImagen(File image, String idorquidea) async {
     var request = http.MultipartRequest(
-        "POST", Uri.parse("http://10.0.2.2:8283/image/upload"));
+        //"POST", Uri.parse("http://10.0.2.2:8283/image/upload"));
+    "POST", Uri.parse("http://10.0.2.2:8283/api/image/upload/$idorquidea/")
+        //"POST", Uri.parse("http://10.0.2.2:8283/api/image/upload/61beba9c84b748861c7323e9 )")
+
+    );
+    //localhost:8283/api/image/upload/61b95867ab2e34166ffc2a99/
 
     var picture = await http.MultipartFile.fromPath("photo", image.path);
-
     request.files.add(picture);
-
     var response = await request.send();
-
     var responseData = await response.stream.toBytes();
-
     String rawResponse = utf8.decode(responseData);
-
     var jsonResponse = jsonDecode(rawResponse);
-
     print(rawResponse);
-
     ImageResponse ir = ImageResponse(jsonResponse);
-
     return ir;
   }
 
 }
 
 class ImageResponse {
-
   String Result = '';
-
   ImageResponse(Map jsonResponse) {
     this.Result = jsonResponse["Result"];
   }

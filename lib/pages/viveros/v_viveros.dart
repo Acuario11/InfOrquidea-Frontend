@@ -198,6 +198,7 @@ class _VerViveroState extends State<VerVivero>{
                         fit: BoxFit.contain,
                         alignment: Alignment.topRight,
                         image: AssetImage('assets/images/viverosf.jpg'),
+
                       ),
                     ),
                   ),

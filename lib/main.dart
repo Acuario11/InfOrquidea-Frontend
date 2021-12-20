@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:login_inforquidea/providers/image.dart';
+import 'package:provider/provider.dart';
 
 import 'pages/splash_screen.dart';
 
@@ -17,18 +19,31 @@ class LoginUIApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
+  /*MultiProvider(
+  providers: [
+    Provider<Something>(create: (_) => Something()),
+    Provider<SomethingElse>(create: (_) => SomethingElse()),
+    Provider<AnotherThing>(create: (_) => AnotherThing()),
+  ],
+  child: someWidget,
+)*/
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Login UI',
-      theme: ThemeData(
-        primaryColor: _primaryColor,
-        colorScheme: theme.colorScheme.copyWith(secondary: _accentColor),
-        primaryColorDark: _primaryDarkColor,
-        scaffoldBackgroundColor: Colors.grey.shade100,
-        primarySwatch: Colors.green,
+    return MultiProvider(
+      providers: [
+        Provider<ImagenSeleccion>(create: (_) => ImagenSeleccion()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Login UI',
+        theme: ThemeData(
+          primaryColor: _primaryColor,
+          colorScheme: theme.colorScheme.copyWith(secondary: _accentColor),
+          primaryColorDark: _primaryDarkColor,
+          scaffoldBackgroundColor: Colors.grey.shade100,
+          primarySwatch: Colors.green,
 
+        ),
+        home:  SplashScreen(title: 'Flutter Login UI'),
       ),
-      home:  SplashScreen(title: 'Flutter Login UI'),
     );
   }
 }

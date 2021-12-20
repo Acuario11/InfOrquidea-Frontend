@@ -2,11 +2,15 @@ import 'dart:convert';
 
 class AuthResponse {
   String message = "";
+  String foto = "";
+  String nombre = "";
   String usuarioId = "";
   String? token = "";
 
   AuthResponse(Map jsonAuthResponse) {
     this.message = jsonAuthResponse["message"];
+    this.foto = jsonAuthResponse["foto"];
+    this.nombre = jsonAuthResponse["nombre"];
     this.usuarioId = jsonAuthResponse["usuarioId"];
     this.token = jsonAuthResponse["token"];
   }
